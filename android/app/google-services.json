@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "708857609705",
+    "project_id": "onelook-2a94a",
+    "storage_bucket": "onelook-2a94a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708857609705:android:7f1d0cc0ee72610fd25f78",
+        "android_client_info": {
+          "package_name": "com.example.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708857609705-gq8j4pms8dtbks884jlchbne3l5854v3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_jK38NBOfazhPXJ-n2cn9FJx_-yP7nDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708857609705-gq8j4pms8dtbks884jlchbne3l5854v3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
