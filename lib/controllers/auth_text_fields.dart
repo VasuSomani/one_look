@@ -15,7 +15,8 @@ OutlineInputBorder FocusedBorder = OutlineInputBorder(
     borderSide: const BorderSide(color: Color(0xFFFAFAFF), width: 1));
 
 class TextFieldEmail extends StatelessWidget {
-  TextFieldEmail(this.controller);
+  TextFieldEmail(this.controller, {this.validationOn = false});
+  bool validationOn;
   final TextEditingController controller;
 
   @override
@@ -32,6 +33,9 @@ class TextFieldEmail extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
+          autovalidateMode: (validationOn)
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             hintText: "Enter your e-mail here",
@@ -60,7 +64,8 @@ class TextFieldEmail extends StatelessWidget {
 }
 
 class TextFieldPass extends StatefulWidget {
-  TextFieldPass(this.controller);
+  TextFieldPass(this.controller, {this.validationOn = false});
+  bool validationOn;
   final TextEditingController controller;
 
   @override
@@ -85,6 +90,9 @@ class _TextFieldPassState extends State<TextFieldPass> {
         TextFormField(
           controller: widget.controller,
           textInputAction: TextInputAction.next,
+          autovalidateMode: (widget.validationOn)
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
           decoration: InputDecoration(
             hintText: "Enter your password here",
             hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -152,6 +160,7 @@ class TextFieldConfirmPass extends StatelessWidget {
         TextFormField(
           controller: controller,
           textInputAction: TextInputAction.next,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             hintText: "Enter your password again",
             hintStyle: Theme.of(context).textTheme.bodyMedium,
@@ -168,7 +177,9 @@ class TextFieldConfirmPass extends StatelessWidget {
           ),
           obscureText: true,
           validator: (value) {
-            if (value != password.text) {
+            if (value == null || value.trim() == '') {
+              return "Confirm Password can't be empty";
+            } else if (value != password.text) {
               return "Confirm Password must be same as Password";
             }
             return null;
@@ -180,7 +191,8 @@ class TextFieldConfirmPass extends StatelessWidget {
 }
 
 class TextFieldName extends StatelessWidget {
-  TextFieldName(this.controller);
+  TextFieldName(this.controller, {this.validationOn = false});
+  bool validationOn;
   final TextEditingController controller;
 
   @override
@@ -198,6 +210,9 @@ class TextFieldName extends StatelessWidget {
         TextFormField(
           controller: controller,
           textInputAction: TextInputAction.next,
+          autovalidateMode: (validationOn)
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
           decoration: InputDecoration(
             hintText: "Enter your name",
             hintStyle: Theme.of(context).textTheme.bodyMedium,

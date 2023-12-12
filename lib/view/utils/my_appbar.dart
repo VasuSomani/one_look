@@ -5,23 +5,24 @@ import '../../Constants/colors.dart';
 
 class MyAppBar extends SliverAppBar {
   final BuildContext context;
-  MyAppBar(this.context)
+  final String name;
+  MyAppBar(this.context, this.name)
       : super(
             backgroundColor: bgColor2,
+            leadingWidth: 100,
+            leading: Row(
+              children: [
+                SizedBox(width: 15),
+                Image.asset('assets/images/logo.png'),
+              ],
+            ),
             actions: [
-              Image.asset('assets/images/logo_small.png'),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.62),
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child: Container(
-                    height: 56,
-                    width: 56,
-                    color: Colors.white,
-                    margin: EdgeInsets.all(8),
-                    child: Image.asset(
-                      'assets/icons/notification.png',
-                      scale: 1.5,
-                    )),
+                child: Image.asset(
+                  'assets/icons/notification.png',
+                  scale: 1.5,
+                ),
               ),
             ],
             bottom: PreferredSize(
@@ -32,7 +33,7 @@ class MyAppBar extends SliverAppBar {
                   width: MediaQuery.of(context).size.width,
                   margin: EdgeInsets.symmetric(horizontal: 24),
                   child: Text(
-                    "Hi Vasu!",
+                    name,
                     textAlign: TextAlign.start,
                     style: Theme.of(context)
                         .textTheme

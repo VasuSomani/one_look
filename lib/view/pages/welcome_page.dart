@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/view/utils/animated_logo.dart';
-import 'package:todo/view/utils/buttons.dart';
+import '../utils/animated_logo.dart';
+import '../utils/buttons.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class WelcomePage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AnimatedLogo(),
+                    const AnimatedLogo(),
                     SizedBox(height: height / 20),
                     Text(
                       "Welcome to OneLook",

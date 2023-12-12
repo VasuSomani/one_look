@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/Constants/colors.dart';
+import '../../Constants/colors.dart';
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({Key? key}) : super(key: key);

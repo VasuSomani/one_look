@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/view/utils/buttons.dart';
+import '../utils/buttons.dart';
 
 class OnBoardingPage1 extends StatelessWidget {
   const OnBoardingPage1({Key? key}) : super(key: key);
@@ -51,7 +51,9 @@ class OnBoardingPage1 extends StatelessWidget {
               padding: EdgeInsets.only(
                   left: width / 15, right: width / 15, bottom: height / 50),
               child: PrimaryButton(
-                  () => Navigator.pushNamed(context, '/onboard2'), "Next"),
+                () => Navigator.pushNamed(context, '/onboard2'),
+                "Next",
+              ),
             )
           ],
         ),

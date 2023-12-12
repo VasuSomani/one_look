@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/view/pages/forgot_password_page.dart';
 import '../pages/about_us_page.dart';
 import '../pages/my_account_page.dart';
 import '../pages/todo_settings_page.dart';
@@ -14,7 +15,7 @@ import '../utils/page_navigator.dart';
 class Routes extends NavigatorObserver {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/':
+      case '/welcome':
         return MaterialPageRoute(builder: (_) => const WelcomePage());
       case '/onboard1':
         return MaterialPageRoute(builder: (_) => const OnBoardingPage1());
@@ -24,6 +25,8 @@ class Routes extends NavigatorObserver {
         return MaterialPageRoute(builder: (_) => const OnBoardingPage3());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LogInPage());
+      case '/forgot_password':
+        return MaterialPageRoute(builder: (_) => const ForgotPassword());
       case '/signup':
         return MaterialPageRoute(builder: (_) => const SignUpPage());
       case '/pages':

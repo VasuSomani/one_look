@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/Constants/colors.dart';
-import 'package:todo/view/utils/todo_tile.dart';
-
+import '../../Constants/colors.dart';
+import '../../models/task.dart';
 import '../utils/task_tile.dart';
 
 class TasksSettings extends StatelessWidget {
@@ -9,6 +10,32 @@ class TasksSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Stream<List<Task>> fetchPendingTasks() {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      return FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('task')
+          .where('isCompleted', isEqualTo: false)
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map((doc) {
+                return Task.fromJson(doc.data() as Map<String, dynamic>);
+              }).toList());
+    }
+
+    Stream<List<Task>> fetchCompletedTasks() {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+      return FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('task')
+          .where('isCompleted', isEqualTo: true)
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map((doc) {
+                return Task.fromJson(doc.data() as Map<String, dynamic>);
+              }).toList());
+    }
+
     return DefaultTabController(
       length: 2, // Number of tabs
       child: Scaffold(
@@ -48,34 +75,138 @@ class TasksSettings extends StatelessWidget {
             padding: EdgeInsets.only(
               left: 10,
             ),
-            child: Text("My Todo"),
+            child: Text("My Tasks"),
           ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: TabBarView(
             children: [
-              // Completed Tasks Section
-              ListView.builder(
-                itemBuilder: (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: TaskTile(),
-                  );
+              StreamBuilder<List<Task>>(
+                stream: fetchPendingTasks(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(color: primaryColor);
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    List<Task> taskList = snapshot.data!;
+                    List<Task> newList = taskList.reversed.toList();
+                    return Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          Task currTask = newList[index];
+                          debugPrint(currTask.taskID);
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: TaskTile(
+                              taskID: currTask.taskID ?? "",
+                              title: currTask.title,
+                              body: currTask.body,
+                              deadlineDate: currTask.deadlineDate,
+                              deadlineTime: currTask.deadlineTime,
+                              isCompleted: currTask.isCompleted.toString(),
+                            ),
+                          );
+                        },
+                        itemCount: taskList.length,
+                        padding: EdgeInsets.zero,
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 40),
+                                child: Image.asset(
+                                  'assets/images/completed_1.png',
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              Text(
+                                "No Task left for the day",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(color: progress),
+                                softWrap: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 },
-                itemCount:
-                    5, // Replace with the actual number of completed tasks
               ),
-              // Pending Tasks Section
-              ListView.builder(
-                itemBuilder: (context, index) {
-                  return const Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: TaskTile(),
-                  );
+              StreamBuilder<List<Task>>(
+                stream: fetchCompletedTasks(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator(color: primaryColor);
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    List<Task> taskList = snapshot.data!;
+                    List<Task> newList = taskList.reversed.toList();
+                    return Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          Task currTask = newList[index];
+                          debugPrint(currTask.taskID);
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: TaskTile(
+                              taskID: currTask.taskID ?? "",
+                              title: currTask.title,
+                              body: currTask.body,
+                              deadlineDate: currTask.deadlineDate,
+                              deadlineTime: currTask.deadlineTime,
+                              isCompleted: currTask.isCompleted.toString(),
+                            ),
+                          );
+                        },
+                        itemCount: taskList.length,
+                        padding: EdgeInsets.zero,
+                      ),
+                    );
+                  } else {
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 40),
+                                child: Image.asset(
+                                  'assets/images/completed_1.png',
+                                ),
+                              ),
+                              SizedBox(height: 15),
+                              Text(
+                                "No Task completed today \n Let's get back to work",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(color: progress),
+                                softWrap: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                 },
-                itemCount:
-                    10, // Replace with the actual number of pending tasks
               ),
             ],
           ),

@@ -29,6 +29,13 @@
             {
               "client_id": "708857609705-gq8j4pms8dtbks884jlchbne3l5854v3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "708857609705-4bpqaujhlfpad2503ho64j4k4ln7i4f4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todo.RunnerTests"
+              }
             }
           ]
         }
